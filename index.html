@@ -47,13 +47,13 @@ nav {
     z-index: 1000;
     box-shadow: 0 0 40px rgba(0,245,255,0.1);
     width: auto;
-    max-width: 90%;
+    max-width: 95%;
 }
 
 nav a {
     color: var(--muted);
     text-decoration: none;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 500;
     transition: 0.3s;
     white-space: nowrap;
@@ -72,7 +72,6 @@ section {
     position: relative;
 }
 
-/* Возврат к исходному мягкому свечению для всех блоков */
 .card, .level-card {
     background: var(--glass);
     backdrop-filter: blur(30px);
@@ -91,7 +90,6 @@ section {
     box-shadow: 0 0 80px var(--accent-soft);
 }
 
-/* Сетка для уровней */
 .levels-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -121,22 +119,25 @@ section {
     .levels-container {
         grid-template-columns: 1fr;
     }
+    nav {
+        display: none; /* Скрываем навигацию на мобильных для удобства */
+    }
+}
+
+h1, h2 {
+    font-weight: 800;
+    background: linear-gradient(90deg, #00f5ff, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 30px;
 }
 
 h1 {
     font-size: 56px;
-    font-weight: 800;
-    margin-bottom: 30px;
-    background: linear-gradient(90deg, #00f5ff, #7c3aed);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 
 h2 {
     font-size: 42px;
-    font-weight: 700;
-    margin-bottom: 25px;
-    color: var(--accent);
 }
 
 p {
@@ -155,7 +156,6 @@ p {
     font-weight: 600;
 }
 
-/* Back to top button */
 .top-button {
     position: fixed;
     bottom: 40px;
@@ -184,7 +184,6 @@ footer {
     font-size: 14px;
 }
 
-/* Fade animation */
 section {
     opacity: 0;
     transform: translateY(40px);
@@ -206,11 +205,12 @@ section.visible {
     <a href="#levels">Уровни влияния</a>
     <a href="#growth">Динамика</a>
     <a href="#effects">Эффекты</a>
+    <a href="#finance">Потери</a>
+    <a href="#scaling">Масштаб</a>
+    <a href="#trust">Доверие</a>
+    <a href="#risks">Риски</a>
     <a href="#market">Рынок</a>
-    <a href="#gap">Разрыв</a>
     <a href="#solution">Что нужно</a>
-    <a href="#product">Решение</a>
-    <a href="#impact">Эффект</a>
 </nav>
 
 <section id="problem">
@@ -295,6 +295,48 @@ section.visible {
     </div>
 </section>
 
+<section id="finance">
+    <div class="card">
+        <h2>Скрытые финансовые потери</h2>
+        <p>На раннем этапе потери неочевидны. Они распределены по процессам: лишнее рабочее время сотрудников, дополнительные проверки, ручная корректировка отчётов, повторная коммуникация с клиентами.</p>
+        <p>Но через несколько лет возникает потребность в «большой чистке». Это означает:</p>
+        <p>• проект по внедрению MDM,<br>
+           • дорогостоящая миграция,<br>
+           • пересборка архитектуры,<br>
+           • аудит и консалтинг.</p>
+        <p class="highlight">Стоимость исправления накопленного хаоса в разы выше, чем его предотвращение.</p>
+    </div>
+</section>
+
+<section id="scaling">
+    <div class="card">
+        <h2>Невозможность масштабирования</h2>
+        <p>Когда бизнес растёт, требования к данным возрастают: появляются новые каналы, новые интеграции, новые аналитические инструменты.</p>
+        <p>Если фундамент нестабилен, масштабирование превращается в борьбу с последствиями. Каждое расширение системы требует всё больше усилий на согласование данных.</p>
+        <p class="muted">В какой-то момент компания упирается в потолок: дальше расти можно только после глубокой реорганизации данных.</p>
+    </div>
+</section>
+
+<section id="trust">
+    <div class="card">
+        <h2>Потеря доверия к данным</h2>
+        <p>Это самый опасный эффект. Когда сотрудники и руководство понимают, что данным нельзя полностью доверять, они начинают опираться на интуицию или ручные выборки.</p>
+        <p>BI-системы становятся формальностью. Отчёты перепроверяются вручную. Автоматизация теряет смысл.</p>
+        <p class="highlight">В итоге данные есть — но ими не пользуются как стратегическим инструментом.</p>
+    </div>
+</section>
+
+<section id="risks">
+    <div class="card">
+        <h2>Усиление риска ошибок и санкций</h2>
+        <p>В определённых сферах (финансы, персональные данные, госзаказы) некорректность информации может привести к:</p>
+        <p>• штрафам,<br>
+           • юридическим проблемам,<br>
+           • репутационным рискам.</p>
+        <p class="muted">Чем больше объём данных, тем выше вероятность системной ошибки.</p>
+    </div>
+</section>
+
 <section id="market">
     <div class="card">
         <h2>Рынок решений</h2>
@@ -302,32 +344,10 @@ section.visible {
     </div>
 </section>
 
-<section id="gap">
-    <div class="card">
-        <h2>Почему проблема остаётся</h2>
-        <p>Решения дорогие и внедряются как отдельные проекты. Контроль качества не встроен в инфраструктуру.</p>
-    </div>
-</section>
-
 <section id="solution">
     <div class="card">
         <h2>Что необходимо</h2>
         <p>Превратить контроль качества данных в обязательный слой архитектуры. Перейти от исправления к предотвращению.</p>
-    </div>
-</section>
-
-<section id="product">
-    <div class="card">
-        <h2>Предлагаемое решение</h2>
-        <p>Модульный инфраструктурный слой, который нормализует, обогащает, объединяет дубли и анализирует качество данных.</p>
-        <p class="highlight">Базовая версия — бесплатная. Масштабируемость — от стартапа до enterprise.</p>
-    </div>
-</section>
-
-<section id="impact">
-    <div class="card">
-        <h2>Почему это изменит рынок</h2>
-        <p>Когда контроль качества становится стандартом, культура работы с данными меняется естественно.</p>
     </div>
 </section>
 
