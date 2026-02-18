@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Clean Layer — Презентация</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg: #0b0f1a;
+    --glass: rgba(255,255,255,0.05);
+    --accent: #00f5ff;
+    --accent-soft: rgba(0,245,255,0.4);
+    --text: #e6edf3;
+    --muted: #8b9bb4;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: radial-gradient(circle at 20% 20%, #111a2e 0%, #0b0f1a 40%),
+                radial-gradient(circle at 80% 80%, #13203a 0%, #0b0f1a 50%);
+    color: var(--text);
+    scroll-behavior: smooth;
+}
+
+/* Floating Navigation */
+nav {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    backdrop-filter: blur(20px);
+    background: var(--glass);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 12px 25px;
+    border-radius: 50px;
+    display: flex;
+    gap: 18px;
+    z-index: 1000;
+    box-shadow: 0 0 40px rgba(0,245,255,0.1);
+}
+
+nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: var(--accent);
+}
+
+section {
+    min-height: 100vh;
+    padding: 140px 12% 100px 12%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+.card {
+    background: var(--glass);
+    backdrop-filter: blur(30px);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 60px;
+    border-radius: 24px;
+    box-shadow: 0 0 60px rgba(0,245,255,0.07);
+    transition: 0.4s ease;
+}
+
+.card:hover {
+    box-shadow: 0 0 80px var(--accent-soft);
+}
+
+h1 {
+    font-size: 56px;
+    font-weight: 800;
+    margin-bottom: 30px;
+    background: linear-gradient(90deg, #00f5ff, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+h2 {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: var(--accent);
+}
+
+p {
+    font-size: 18px;
+    line-height: 1.8;
+    color: var(--text);
+    margin-bottom: 20px;
+}
+
+.muted {
+    color: var(--muted);
+}
+
+.highlight {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/* Back to top button */
+.top-button {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #00f5ff, #7c3aed);
+    color: #000;
+    font-size: 24px;
+    cursor: pointer;
+    display: none;
+    box-shadow: 0 0 30px var(--accent-soft);
+    transition: 0.3s;
+}
+
+.top-button:hover {
+    transform: scale(1.1);
+}
+
+footer {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* Fade animation */
+section {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s ease;
+}
+
+section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+</style>
+</head>
+<body>
+
+<nav>
+    <a href="#problem">Проблема</a>
+    <a href="#why">Почему</a>
+    <a href="#consequences">Последствия</a>
+    <a href="#market">Рынок</a>
+    <a href="#gap">Разрыв</a>
+    <a href="#solution">Что нужно</a>
+    <a href="#product">Решение</a>
+    <a href="#impact">Эффект</a>
+</nav>
+
+<section id="problem">
+    <div class="card">
+        <h1>Data Clean Layer</h1>
+        <h2>Проблема</h2>
+        <p>В большинстве компаний отсутствует системный подход к хранению данных. Форматы различаются, записи дублируются, информация фрагментируется между сервисами.</p>
+        <p class="highlight">Данные становятся не активом, а источником структурированного шума.</p>
+    </div>
+</section>
+
+<section id="why">
+    <div class="card">
+        <h2>Почему это критично</h2>
+        <p>Операционные процессы замедляются, архитектура усложняется, аналитика искажается.</p>
+        <p class="muted">Компания теряет точность управленческих решений.</p>
+    </div>
+</section>
+
+<section id="consequences">
+    <div class="card">
+        <h2>Последствия</h2>
+        <p>Рост скрытых затрат, дорогостоящие миграции, падение доверия к данным, ограничение масштабируемости.</p>
+    </div>
+</section>
+
+<section id="market">
+    <div class="card">
+        <h2>Рынок решений</h2>
+        <p>Существуют инструменты нормализации и MDM-системы, но они работают реактивно и не становятся частью архитектуры по умолчанию.</p>
+    </div>
+</section>
+
+<section id="gap">
+    <div class="card">
+        <h2>Почему проблема остаётся</h2>
+        <p>Решения дорогие и внедряются как отдельные проекты. Контроль качества не встроен в инфраструктуру.</p>
+    </div>
+</section>
+
+<section id="solution">
+    <div class="card">
+        <h2>Что необходимо</h2>
+        <p>Превратить контроль качества данных в обязательный слой архитектуры. Перейти от исправления к предотвращению.</p>
+    </div>
+</section>
+
+<section id="product">
+    <div class="card">
+        <h2>Предлагаемое решение</h2>
+        <p>Модульный инфраструктурный слой, который нормализует, обогащает, объединяет дубли и анализирует качество данных.</p>
+        <p class="highlight">Базовая версия — бесплатная. Масштабируемость — от стартапа до enterprise.</p>
+    </div>
+</section>
+
+<section id="impact">
+    <div class="card">
+        <h2>Почему это изменит рынок</h2>
+        <p>Когда контроль качества становится стандартом, культура работы с данными меняется естественно.</p>
+    </div>
+</section>
+
+<footer>
+    Data Clean Layer — новый стандарт качества данных
+</footer>
+
+<button class="top-button" onclick="scrollToTop()">↑</button>
+
+<script>
+const topButton = document.querySelector('.top-button');
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 400) {
+        topButton.style.display = 'block';
+    } else {
+        topButton.style.display = 'none';
+    }
+
+    document.querySelectorAll('section').forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+            sec.classList.add('visible');
+        }
+    });
+});
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
