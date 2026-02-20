@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Культура качества данных</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg: #080c18;
+    --accent: #00f5ff;
+    --accent2: #7c3aed;
+    --accent3: #f97316;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.08);
+    --text: #dde6f0;
+    --muted: #6b7f99;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+        radial-gradient(ellipse 70% 55% at 10% 15%, rgba(0,245,255,0.055) 0%, transparent 65%),
+        radial-gradient(ellipse 55% 65% at 90% 85%, rgba(124,58,237,0.07) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ─── NAV ─── */
+nav {
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    background: rgba(8,12,24,0.55);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 9px 16px;
+    border-radius: 50px;
+    display: flex;
+    gap: 2px;
+    z-index: 1000;
+    box-shadow: 0 0 0 1px rgba(0,245,255,0.06), 0 8px 32px rgba(0,0,0,0.5);
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    width: max-content;
+    max-width: 98vw;
+}
+
+nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 9px;
+    border-radius: 20px;
+    transition: all 0.25s;
+    white-space: nowrap;
+    font-family: 'Syne', sans-serif;
+    letter-spacing: 0.3px;
+}
+
+nav a:hover { color: var(--accent); background: rgba(0,245,255,0.08); }
+
+/* ─── SECTIONS ─── */
+section {
+    min-height: 100vh;
+    padding: 130px 8% 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+    will-change: opacity, transform;
+}
+
+section.visible { opacity: 1; transform: translateY(0); }
+
+#hero { align-items: flex-start; }
+
+/* ─── HERO ─── */
+.hero-eyebrow {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+    opacity: 0.75;
+}
+
+h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(48px, 8vw, 88px);
+    font-weight: 800;
+    line-height: 1.0;
+    margin-bottom: 32px;
+    background: linear-gradient(135deg, #ffffff 0%, var(--accent) 55%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-sub {
+    font-size: 19px;
+    color: var(--muted);
+    max-width: 580px;
+    line-height: 1.75;
+    margin-bottom: 40px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: rgba(0,245,255,0.07);
+    border: 1px solid rgba(0,245,255,0.18);
+    border-radius: 30px;
+    padding: 8px 18px;
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+    font-family: 'Syne', sans-serif;
+}
+
+.badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    animation: pulse 2.2s infinite;
+}
+
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.25;} }
+
+/* ─── SECTION HEADER ─── */
+.section-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(0,245,255,0.4);
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(26px, 3.8vw, 40px);
+    font-weight: 800;
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, #ffffff 0%, #b0cce8 40%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+h2 span {
+    background: linear-gradient(90deg, var(--accent) 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.divider {
+    width: 48px; height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    margin-bottom: 36px;
+    margin-top: 6px;
+}
+
+h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+p {
+    font-size: 15.5px;
+    line-height: 1.78;
+    color: var(--text);
+    margin-bottom: 12px;
+}
+
+p:last-child { margin-bottom: 0; }
+
+.muted { color: var(--muted); }
+.hl { color: var(--accent); font-weight: 600; }
+.hl2 { color: var(--accent2); font-weight: 600; }
+.hl3 { color: var(--accent3); font-weight: 600; }
+
+/* ─── CARDS ─── */
+.big-card {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 22px;
+    padding: 48px 52px;
+    transition: border-color 0.35s, box-shadow 0.35s;
+}
+
+.big-card:hover {
+    border-color: rgba(0,245,255,0.18);
+    box-shadow: 0 14px 44px rgba(0,245,255,0.08);
+    background: rgba(0,245,255,0.018);
+}
+
+.card {
+    background: var(--glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    padding: 32px;
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.card:hover {
+    border-color: rgba(0,245,255,0.22);
+    box-shadow: 0 14px 44px rgba(0,245,255,0.1);
+    transform: translateY(-2px);
+    background: rgba(0,245,255,0.032);
+}
+
+/* ─── GRIDS ─── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+.grid-auto { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+
+@media (max-width: 860px) {
+    .grid-2, .grid-3, .grid-auto, .split { grid-template-columns: 1fr; }
+}
+
+/* ─── LIST ITEMS ─── */
+.li {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 15px;
+    align-items: flex-start;
+}
+
+.dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 7px var(--accent);
+    margin-top: 9px;
+    flex-shrink: 0;
+}
+
+.dot.warn {
+    background: rgba(249,115,22,0.8);
+    box-shadow: 0 0 7px rgba(249,115,22,0.6);
+}
+
+/* ─── GEO ICONS (geometric, no emojis) ─── */
+.ico {
+    width: 38px; height: 38px;
+    border-radius: 9px;
+    border: 1px solid rgba(0,245,255,0.2);
+    background: rgba(0,245,255,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    flex-shrink: 0;
+}
+
+.ico svg { width: 17px; height: 17px; stroke: var(--accent); fill: none; stroke-width: 1.7; }
+.ico.v2 { border-color: rgba(124,58,237,0.25); background: rgba(124,58,237,0.06); }
+.ico.v2 svg { stroke: #a78bfa; }
+.ico.v3 { border-color: rgba(249,115,22,0.25); background: rgba(249,115,22,0.05); }
+.ico.v3 svg { stroke: var(--accent3); }
+
+/* ─── MODULE CARDS ─── */
+.module-card {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 30px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.module-card:hover {
+    background: rgba(0,245,255,0.032);
+    border-color: rgba(0,245,255,0.22);
+    transform: translateY(-4px);
+    box-shadow: 0 14px 44px rgba(0,245,255,0.1);
+}
+
+.module-tag {
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(0,245,255,0.5);
+    margin-bottom: 12px;
+}
+
+/* ─── COMPARE TABLE ─── */
+.compare-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.compare-row:last-of-type { border-bottom: none; }
+.compare-name { font-family: 'Syne', sans-serif; font-weight: 700; min-width: 120px; font-size: 15px; }
+.compare-tags { flex: 1; display: flex; flex-wrap: wrap; gap: 6px; }
+.compare-verdict { font-size: 12px; color: var(--muted); text-align: right; white-space: nowrap; }
+
+.tag {
+    display: inline-block;
+    background: rgba(0,245,255,0.07);
+    border: 1px solid rgba(0,245,255,0.18);
+    border-radius: 5px;
+    padding: 3px 9px;
+    font-size: 11px;
+    color: var(--accent);
+    font-family: 'Syne', sans-serif;
+}
+
+.tag.p { background: rgba(124,58,237,0.08); border-color: rgba(124,58,237,0.22); color: #a78bfa; }
+.tag.o { background: rgba(249,115,22,0.07); border-color: rgba(249,115,22,0.2); color: var(--accent3); }
+.tag.g { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); color: var(--muted); }
+
+/* ─── ARCH ROWS ─── */
+.arch-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.arch-row:last-child { border-bottom: none; }
+
+.arch-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 190px;
+    padding-top: 2px;
+    flex-shrink: 0;
+}
+
+/* ─── TOP BUTTON ─── */
+.top-button {
+    position: fixed;
+    bottom: 30px; right: 30px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,245,255,0.25);
+    background: rgba(8,12,24,0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--accent);
+    font-size: 16px;
+    cursor: pointer;
+    display: none;
+    transition: all 0.3s;
+    z-index: 999;
+}
+
+.top-button:hover {
+    background: rgba(0,245,255,0.1);
+    box-shadow: 0 0 20px rgba(0,245,255,0.2);
+    transform: scale(1.1);
+}
+
+footer {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+    font-size: 13px;
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--glass-border);
+    letter-spacing: 1px;
+    font-family: 'Syne', sans-serif;
+}
+</style>
+</head>
+<body>
+
+<nav>
+    <a href="#hero">Введение</a>
+    <a href="#problem">Проблема</a>
+    <a href="#why">Почему проблема</a>
+    <a href="#consequences">Последствия</a>
+    <a href="#market">Рынок</a>
+    <a href="#gap">Разрыв</a>
+    <a href="#need">Что нужно</a>
+    <a href="#proposal">Предложение</a>
+    <a href="#impact">Эффект</a>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section id="hero">
+    <div class="hero-eyebrow">Исследование · Анализ · Предложение</div>
+    <h1>Культура<br>качества<br>данных</h1>
+    <p class="hero-sub">Проблема хаотичного хранения данных в организациях, её последствия и системный подход к её решению.</p>
+    <div class="badge">Актуальная проблема современных организаций</div>
+</section>
+
+<!-- ══════════ ПРОБЛЕМА ══════════ -->
+<section id="problem">
+    <div class="section-num">Проблема</div>
+    <h2><span>Слабая культура хранения данных</span></h2>
+    <div class="divider"></div>
+
+    <div class="big-card">
+        <p>В большинстве организаций отсутствует системный подход к управлению данными. Данные собираются и хранятся стихийно: без единых стандартов, без контроля качества, без закреплённой ответственности. Это не разовый сбой, а накопленная годами системная проблема.</p>
+
+        <div style="margin-top: 32px;">
+            <div class="li">
+                <div class="dot"></div>
+                <div><p><strong>Разрозненность форматов.</strong> Одно и то же поле — телефон, адрес, дата, единица измерения — записывается по-разному в разных системах и даже в одной таблице. Автоматическая обработка таких данных либо невозможна, либо даёт ошибочные результаты.</p></div>
+            </div>
+            <div class="li">
+                <div class="dot"></div>
+                <div><p><strong>Дублирование записей.</strong> Одна сущность — клиент, поставщик, товар — существует в нескольких вариантах одновременно. Данные об одном объекте хранятся в разных таблицах и базах без возможности их автоматически связать.</p></div>
+            </div>
+            <div class="li">
+                <div class="dot"></div>
+                <div><p><strong>Избыточный ручной ввод.</strong> Поля, стандартизированные в открытых реестрах — ИНН, ОГРН, почтовые адреса — по-прежнему заполняются вручную. Это замедляет процессы и гарантирует появление опечаток и расхождений.</p></div>
+            </div>
+            <div class="li">
+                <div class="dot"></div>
+                <div><p><strong>Накопление «мусорных» данных.</strong> Невалидные значения, устаревшие записи, произвольные комментарии вместо структурированных полей — всё это копится годами. Периодические «чистки» дают лишь временный эффект, так как причина не устранена.</p></div>
+            </div>
+            <div class="li">
+                <div class="dot"></div>
+                <div><p><strong>Архитектурные ошибки с самого начала.</strong> То, что могло бы быть нормализованным справочником, хранится плоскими строками. Структура, удобная «здесь и сейчас», становится препятствием для любого развития системы в будущем.</p></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ ПОЧЕМУ ПРОБЛЕМА ══════════ -->
+<section id="why">
+    <div class="section-num">Почему проблема</div>
+    <h2><span>Почему это действительно проблема</span></h2>
+    <div class="divider"></div>
+
+    <div class="grid-3" style="margin-bottom: 18px;">
+        <div class="card">
+            <div class="ico">
+                <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <h3>Аналитика теряет смысл</h3>
+            <p>Отчёты строятся на ненадёжных данных. Аналитика показывает не реальность, а артефакты хранения — дубли завышают метрики, ошибки искажают выборки. Управленческие решения принимаются при скрытой неопределённости.</p>
+        </div>
+        <div class="card">
+            <div class="ico">
+                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            </div>
+            <h3>Интеграции усложняются</h3>
+            <p>Передача данных между системами требует промежуточных трансформаций и маппингов. Каждая интеграция — дополнительный источник ошибок и технического долга, который накапливается с каждым новым сервисом.</p>
+        </div>
+        <div class="card">
+            <div class="ico">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <h3>Потеря рабочего времени</h3>
+            <p>Сотрудники тратят время на поиск «правильной» записи среди дублей, ручную сверку данных и исправление чужих ошибок. Это прямые операционные потери, которые крайне сложно измерить и заметить.</p>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <div class="card">
+            <div class="ico v2">
+                <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </div>
+            <h3>Масштабирование становится болезненным</h3>
+            <p>Грязная архитектура с каждым новым модулем или рынком разрастается нелинейно. То, что работало для одной системы, ломается при подключении второй. Технический долг растёт экспоненциально.</p>
+        </div>
+        <div class="card">
+            <div class="ico v2">
+                <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <h3>Барьер для новых технологий</h3>
+            <p>Внедрение ИИ и машинного обучения требует качественных данных. Организации с хаотичными базами оказываются отрезаны от этих возможностей — не из-за отсутствия технологий, а из-за состояния своих данных.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ ПОСЛЕДСТВИЯ ══════════ -->
+<section id="consequences">
+    <div class="section-num">Последствия</div>
+    <h2><span>К чему это приводит</span></h2>
+    <div class="divider"></div>
+
+    <div class="big-card" style="margin-bottom: 18px;">
+        <p style="font-size: 17px; margin-bottom: 32px;">Проблемы с данными не остаются в IT-отделе — они распространяются по всей организации и со временем становятся критическими.</p>
+
+        <div class="split">
+            <div>
+                <div class="li" style="margin-bottom: 20px;">
+                    <div class="dot"></div>
+                    <div><p><strong>Скрытые затраты на исправление.</strong> Когда организация решает навести порядок, обнаруживается, что это требует остановки процессов, привлечения консультантов и многомесячных миграций. Стоимость чистки запущенной базы может в десятки раз превышать стоимость изначально правильной архитектуры.</p></div>
+                </div>
+                <div class="li" style="margin-bottom: 20px;">
+                    <div class="dot"></div>
+                    <div><p><strong>Потеря институциональной памяти.</strong> Через несколько лет становится невозможно восстановить достоверную историю — кто был клиентом, какой была цена, что именно произошло в конкретный период. Устаревшие и дублированные записи неотличимы от актуальных.</p></div>
+                </div>
+            </div>
+            <div>
+                <div class="li" style="margin-bottom: 20px;">
+                    <div class="dot"></div>
+                    <div><p><strong>Регуляторные риски.</strong> В условиях ужесточения требований к защите персональных данных (ФЗ-152, GDPR) организации с неструктурированными базами не могут гарантировать соответствие — они не знают, где и как хранятся чувствительные данные.</p></div>
+                </div>
+                <div class="li">
+                    <div class="dot"></div>
+                    <div><p><strong>Конкурентное отставание.</strong> Организации, научившиеся работать с качественными данными, принимают решения быстрее и точнее. Разрыв между ними и остальными будет только расти по мере развития аналитических технологий.</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-3">
+        <div class="card">
+            <div class="ico v3">
+                <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <h3>Падение доверия к данным</h3>
+            <p>Когда сотрудники знают, что данным нельзя доверять — они перестают их использовать. Инвестиции в CRM, ERP и BI обесцениваются.</p>
+        </div>
+        <div class="card">
+            <div class="ico v3">
+                <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <h3>Барьер для цифровизации</h3>
+            <p>Новые цифровые инструменты невозможно интегрировать с хаотичной базой без предварительной дорогостоящей очистки — проекты затягиваются или отменяются.</p>
+        </div>
+        <div class="card">
+            <div class="ico v3">
+                <svg viewBox="0 0 24 24"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+            </div>
+            <h3>Технологический тупик</h3>
+            <p>Слабая база данных становится потолком для развития: внедрение ИИ, предиктивной аналитики и автоматизации требует качественных структурированных данных.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ РЫНОК ══════════ -->
+<section id="market">
+    <div class="section-num">Рынок</div>
+    <h2><span>Анализ существующих решений</span></h2>
+    <div class="divider"></div>
+
+    <div class="big-card">
+        <p class="muted" style="margin-bottom: 30px;">На рынке существует ряд инструментов, направленных на работу с качеством данных. Рассмотрим наиболее значимые из них:</p>
+
+        <div class="compare-row">
+            <div class="compare-name" style="color: var(--accent);">DaData</div>
+            <div class="compare-tags">
+                <span class="tag">Нормализация</span>
+                <span class="tag">Подсказки при вводе</span>
+                <span class="tag">Обогащение по ИНН</span>
+                <span class="tag">Валидация</span>
+            </div>
+            <div class="compare-verdict">Только облако · API</div>
+        </div>
+
+        <div class="compare-row">
+            <div class="compare-name" style="color: #a78bfa;">HFLabs</div>
+            <div class="compare-tags">
+                <span class="tag p">MDM</span>
+                <span class="tag p">Дедупликация</span>
+                <span class="tag p">Единый профиль клиента</span>
+                <span class="tag p">Data Governance</span>
+            </div>
+            <div class="compare-verdict">Enterprise · Долгое внедрение</div>
+        </div>
+
+        <div class="compare-row">
+            <div class="compare-name" style="color: var(--accent3);">Informatica</div>
+            <div class="compare-tags">
+                <span class="tag o">MDM</span>
+                <span class="tag o">Data Quality</span>
+                <span class="tag o">Data Catalog</span>
+                <span class="tag o">Lineage</span>
+            </div>
+            <div class="compare-verdict">Мировой лидер · Дорого</div>
+        </div>
+
+        <div class="compare-row">
+            <div class="compare-name" style="color: var(--accent3);">Talend</div>
+            <div class="compare-tags">
+                <span class="tag o">ETL / ELT</span>
+                <span class="tag o">Data Quality</span>
+                <span class="tag o">Интеграция данных</span>
+            </div>
+            <div class="compare-verdict">Сложная настройка</div>
+        </div>
+
+        <div class="compare-row">
+            <div class="compare-name" style="color: var(--muted);">Атрибут</div>
+            <div class="compare-tags">
+                <span class="tag g">Нормализация адресов</span>
+                <span class="tag g">ФИАС / КЛАДР</span>
+            </div>
+            <div class="compare-verdict">Узкая специализация</div>
+        </div>
+
+        <div class="compare-row">
+            <div class="compare-name" style="color: var(--muted);">Spark MDM</div>
+            <div class="compare-tags">
+                <span class="tag g">Мастер-данные</span>
+                <span class="tag g">Российский рынок</span>
+            </div>
+            <div class="compare-verdict">Только крупный бизнес</div>
+        </div>
+
+        <div class="compare-row">
+            <div class="compare-name" style="color: var(--muted);">1С: MDM</div>
+            <div class="compare-tags">
+                <span class="tag g">Интеграция с 1С</span>
+                <span class="tag g">Справочники НСИ</span>
+            </div>
+            <div class="compare-verdict">Только экосистема 1С</div>
+        </div>
+
+        <p style="margin-top: 30px;" class="muted">Все перечисленные инструменты решают <strong style="color: var(--text);">отдельные аспекты</strong> проблемы, однако ни один не предлагает комплексного системного подхода, доступного организациям любого масштаба.</p>
+    </div>
+</section>
+
+<!-- ══════════ РАЗРЫВ ══════════ -->
+<section id="gap">
+    <div class="section-num">Разрыв</div>
+    <h2><span>Почему проблема остаётся нерешённой</span></h2>
+    <div class="divider"></div>
+
+    <div class="grid-2">
+        <div class="card">
+            <div class="ico">
+                <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <h3>Высокий финансовый порог</h3>
+            <p>Полноценные MDM-системы стоят от нескольких миллионов рублей только за лицензию, плюс дорогостоящее внедрение силами консультантов. Для большинства организаций это непосильная инвестиция.</p>
+        </div>
+
+        <div class="card">
+            <div class="ico">
+                <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            </div>
+            <h3>Фрагментарность решений</h3>
+            <p>Рынок предлагает изолированные точечные инструменты: один нормализует адреса, другой ищет дубли, третий анализирует качество. Организации вынуждены собирать несовместимые сервисы от разных поставщиков.</p>
+        </div>
+
+        <div class="card">
+            <div class="ico v2">
+                <svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+            </div>
+            <h3>Только реактивный подход</h3>
+            <p>Все существующие инструменты работают с последствиями — они чистят то, что уже испорчено. Ни одно решение не встраивается в процессы как превентивный слой, предотвращающий появление проблем.</p>
+        </div>
+
+        <div class="card">
+            <div class="ico v2">
+                <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <h3>Ориентация только на Enterprise</h3>
+            <p>Весь рынок инструментов выстроен вокруг крупного бизнеса. Малые и средние предприятия, государственные учреждения и образовательные организации остаются без доступных системных решений.</p>
+        </div>
+    </div>
+
+    <div class="big-card" style="margin-top: 18px;">
+        <p><strong>Ключевой вывод:</strong> проблема не в отсутствии технологий. Проблема в том, что контроль качества данных до сих пор воспринимается как <span class="hl">отдельный проект</span>, а не как <span class="hl">базовый слой инфраструктуры</span>, встроенный в любую систему по умолчанию.</p>
+    </div>
+</section>
+
+<!-- ══════════ ЧТО НУЖНО ══════════ -->
+<section id="need">
+    <div class="section-num">Что нужно</div>
+    <h2><span>Что нужно для решения проблемы</span></h2>
+    <div class="divider"></div>
+
+    <div class="big-card">
+        <div class="split">
+            <div>
+                <h3 style="color: var(--muted); font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 22px;">Текущая парадигма</h3>
+                <div class="li">
+                    <div class="dot warn"></div>
+                    <p>Данные хранятся стихийно, потом чистятся разово</p>
+                </div>
+                <div class="li">
+                    <div class="dot warn"></div>
+                    <p>Качество данных — отдельный проект, а не часть повседневных процессов</p>
+                </div>
+                <div class="li">
+                    <div class="dot warn"></div>
+                    <p>Инструменты дорогие, изолированные, недоступные большинству</p>
+                </div>
+                <div class="li">
+                    <div class="dot warn"></div>
+                    <p>Культура формируется через регламенты, которые не работают</p>
+                </div>
+                <div class="li">
+                    <div class="dot warn"></div>
+                    <p>Проблема воспринимается как техническая, а не организационная</p>
+                </div>
+            </div>
+            <div>
+                <h3 style="color: var(--accent); font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 22px;">Необходимая парадигма</h3>
+                <div class="li">
+                    <div class="dot"></div>
+                    <p>Качество данных встроено в инфраструктуру с самого начала</p>
+                </div>
+                <div class="li">
+                    <div class="dot"></div>
+                    <p>Система предотвращает появление мусора, а не только устраняет его</p>
+                </div>
+                <div class="li">
+                    <div class="dot"></div>
+                    <p>Решение доступно организациям любого масштаба</p>
+                </div>
+                <div class="li">
+                    <div class="dot"></div>
+                    <p>Культура формируется через удобный инструмент, основанный на лучших мировых стандартах (ISO 8000, DAMA DMBOK)</p>
+                </div>
+                <div class="li">
+                    <div class="dot"></div>
+                    <p>Решение охватывает и исправление текущих проблем, и предотвращение новых</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ ПРЕДЛОЖЕНИЕ ══════════ -->
+<section id="proposal">
+    <div class="section-num">Предложение</div>
+    <h2><span>Предлагаемый комплексный подход</span></h2>
+    <div class="divider"></div>
+
+    <div class="big-card" style="margin-bottom: 22px;">
+        <p style="font-size: 17px; line-height: 1.75;">Модульная система, которая встраивается в существующую инфраструктуру как <span class="hl">обязательный слой качества данных</span> — а не как очередной отдельный проект. Каждый модуль решает конкретную задачу самостоятельно, но все они усиливают друг друга при совместном использовании.</p>
+    </div>
+
+    <div class="grid-auto" style="margin-bottom: 22px;">
+
+        <div class="module-card">
+            <div class="module-tag">Нормализация</div>
+            <h3>Единый формат данных</h3>
+            <p>Автоматическое приведение телефонов, адресов, дат, единиц измерения, ФИО к стандартным форматам — по шаблонам и с помощью ИИ. Исправление опечаток, устранение нестандартных написаний, унификация свободного текста.</p>
+        </div>
+
+        <div class="module-card">
+            <div class="module-tag">Обогащение</div>
+            <h3>Актуализация и дополнение</h3>
+            <p>Подключение к государственным справочникам (ЕГРЮЛ, ЕГРИП, ФИАС), открытым реестрам и курсам валют. Достаточно ввести ИНН — система автоматически получает полную актуальную карточку организации.</p>
+        </div>
+
+        <div class="module-card">
+            <div class="module-tag">Дедупликация</div>
+            <h3>Золотая запись</h3>
+            <p>Интеллектуальный поиск и объединение дублирующихся записей об одной сущности. Слияние данных из разных таблиц и баз в единую достоверную запись с полным аудит-логом и возможностью отката.</p>
+        </div>
+
+        <div class="module-card">
+            <div class="module-tag">Аналитика качества</div>
+            <h3>Видимость проблем</h3>
+            <p>Дашборд состояния базы в реальном времени: количество дублей, доля опечаток, записи не соответствующие стандарту, незаполненные поля, устаревшие данные. Метрики качества вместо ощущений.</p>
+        </div>
+
+        <div class="module-card">
+            <div class="module-tag">Метаданные</div>
+            <h3>Архитектурные рекомендации</h3>
+            <p>Анализ структуры базы: система выявляет избыточность, предлагает вынести повторяющиеся значения в нормализованные справочники, обнаруживает таблицы с дублирующейся семантикой. Помощь в проектировании правильной архитектуры с нуля.</p>
+        </div>
+
+        <div class="module-card">
+            <div class="module-tag">ИИ-копилот</div>
+            <h3>Доступ к данным без порога</h3>
+            <p>Запросы к базе на естественном языке: система уточняет требования, строит оптимальный запрос и возвращает результат. Снижает барьер доступа к данным для нетехнических специалистов.</p>
+        </div>
+
+    </div>
+
+    <div class="big-card">
+        <h3 style="margin-bottom: 28px; font-size: 17px;">Ключевые принципы архитектуры</h3>
+
+        <div class="arch-row">
+            <div class="arch-label">Модульность</div>
+            <p>Каждый компонент работает независимо и может быть внедрён отдельно. Организация подключает только то, что ей нужно — без лишней сложности и избыточных зависимостей.</p>
+        </div>
+
+        <div class="arch-row">
+            <div class="arch-label">Синергия модулей</div>
+            <p>При совместном использовании модули усиливают друг друга: нормализованные данные лучше дедуплицируются, обогащённые данные точнее анализируются. Система становится эффективнее по мере расширения.</p>
+        </div>
+
+        <div class="arch-row">
+            <div class="arch-label">Локальное развёртывание</div>
+            <p>Основные модули устанавливаются непосредственно в инфраструктуру организации. Данные не покидают периметр — критично для компаний с требованиями к конфиденциальности. Облачный вариант доступен по желанию.</p>
+        </div>
+
+        <div class="arch-row">
+            <div class="arch-label">Безопасность изменений</div>
+            <p>Все операции сопровождаются автоматическими резервными копиями, полным аудит-логом и возможностью отката к любой предыдущей версии. Риск необратимой потери данных исключён.</p>
+        </div>
+
+        <div class="arch-row">
+            <div class="arch-label">Масштабируемость</div>
+            <p>Архитектура рассчитана на работу как с небольшими базами (тысячи записей), так и с enterprise-масштабом (сотни миллионов записей). Один подход — любой масштаб организации.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ ЭФФЕКТ ══════════ -->
+<section id="impact">
+    <div class="section-num">Эффект</div>
+    <h2><span>Почему такой подход должен помочь</span></h2>
+    <div class="divider"></div>
+
+    <div class="grid-3" style="margin-bottom: 18px;">
+        <div class="card">
+            <div class="ico">
+                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <h3>Культура через практику</h3>
+            <p>Регламенты меняют поведение медленно. Удобный инструмент, встроенный в ежедневную работу, формирует правильные привычки естественно — сотрудники следуют стандартам, потому что это проще, а не потому что обязаны.</p>
+        </div>
+        <div class="card">
+            <div class="ico">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            </div>
+            <h3>Превентивная логика</h3>
+            <p>Вместо бесконечного цикла «накопили мусор → почистили → снова накопили» система работает как постоянный фильтр. Проблема предотвращается, а не решается постфактум — это принципиально разная стоимость усилий.</p>
+        </div>
+        <div class="card">
+            <div class="ico">
+                <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </div>
+            <h3>Системность вместо точечных решений</h3>
+            <p>Один комплексный подход закрывает всю цепочку: нормализация → обогащение → дедупликация → аналитика → архитектурные рекомендации. Нет необходимости собирать несовместимые инструменты.</p>
+        </div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom: 18px;">
+        <div class="card">
+            <div class="ico v2">
+                <svg viewBox="0 0 24 24"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+            </div>
+            <h3>Стандарт, а не исключение</h3>
+            <p>Цель — чтобы качество данных стало таким же базовым элементом любой системы, как резервное копирование или контроль доступа. Когда инструмент доступен и прост, его начинают использовать повсеместно — и отраслевой стандарт формируется снизу.</p>
+        </div>
+        <div class="card">
+            <div class="ico v2">
+                <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <h3>Долгосрочный эффект</h3>
+            <p>Организация, выстроившая качественную архитектуру данных с самого начала, масштабируется без болезненных миграций, быстрее внедряет новые технологии и принимает более точные управленческие решения.</p>
+        </div>
+    </div>
+
+    <div class="big-card">
+        <p style="font-size: 18px; line-height: 1.75;">Данные давно стали одним из ключевых ресурсов любой организации. Но ресурс, которым не умеют управлять, превращается в <span class="hl3">источник затрат и рисков</span>, а не в <span class="hl">конкурентное преимущество</span>. Системный подход к качеству данных — это не про технологии. Это про <span class="hl2">зрелость организации</span> и её готовность к будущему.</p>
+    </div>
+</section>
+
+<footer>
+    Качество данных · Культура · Системный подход
+</footer>
+
+<button class="top-button" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const topButton = document.querySelector('.top-button');
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+}, { threshold: 0.04, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('section').forEach(s => observer.observe(s));
+
+window.addEventListener('scroll', () => {
+    topButton.style.display = window.scrollY > 400 ? 'block' : 'none';
+}, { passive: true });
+</script>
+</body>
+</html>
